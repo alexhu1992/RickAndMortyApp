@@ -14,6 +14,7 @@ final class RMCharacterViewController: UIViewController {
         title = "Characters"
         navigationItem.largeTitleDisplayMode = .automatic
         view.backgroundColor = .systemBackground
+        
     }
     
 }
