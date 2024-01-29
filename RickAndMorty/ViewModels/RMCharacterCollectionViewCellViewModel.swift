@@ -7,13 +7,15 @@
 
 import Foundation
 
-final class RMCharacterCollectionViewCellViewModel {
+final class RMCharacterCollectionViewCellViewModel: NSObject {
+    public let characterId: Int
     public let characterName: String
     private let characterStatus: RMCharacterStatus
     private let characterImgUrl: URL?
     
     
-    init(characterName: String, characterStaus: RMCharacterStatus, characterImgUrl: URL?) {
+    init(characterId: Int, characterName: String, characterStaus: RMCharacterStatus, characterImgUrl: URL?) {
+        self.characterId = characterId
         self.characterImgUrl = characterImgUrl
         self.characterName = characterName
         self.characterStatus = characterStaus

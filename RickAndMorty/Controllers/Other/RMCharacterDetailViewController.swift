@@ -27,6 +27,4 @@ final class RMCharacterDetailViewController: UIViewController {
         view.backgroundColor = .systemBackground
         title = viewModel.title
     }
-
-    
 }
