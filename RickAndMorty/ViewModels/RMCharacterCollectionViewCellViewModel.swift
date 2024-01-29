@@ -7,7 +7,8 @@
 
 import Foundation
 
-final class RMCharacterCollectionViewCellViewModel: NSObject {
+final class RMCharacterCollectionViewCellViewModel: Hashable, Equatable {
+    
     public let characterId: Int
     public let characterName: String
     private let characterStatus: RMCharacterStatus
@@ -26,21 +27,21 @@ final class RMCharacterCollectionViewCellViewModel: NSObject {
     }
     
     public func fetchImage(completion: @escaping (Result<Data, Error>) -> Void) {
-        // TODO: abstract to an utility class
         guard let url = characterImgUrl else {
             completion(.failure(URLError(.badURL)))
             return
         }
-        let request = URLRequest(url: url)
-        let task = URLSession.shared.dataTask(with: request) { data, _, error in
-            guard let data = data, error == nil else {
-                completion(.failure(error ?? URLError(.badServerResponse)))
-                return
-            }
-            
-            completion(.success(data))
-        }
-        
-        task.resume()
+        ImageLoader.shared.downloadImage(url, completion: completion)
+    }
+    
+    static func == (lhs: RMCharacterCollectionViewCellViewModel, rhs: RMCharacterCollectionViewCellViewModel) -> Bool {
+        return lhs.hashValue == rhs.hashValue
+    }
+    
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(characterName)
+        hasher.combine(characterId)
+        hasher.combine(characterStatus)
+        hasher.combine(characterImgUrl)
     }
 }
