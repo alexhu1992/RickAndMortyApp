@@ -8,5 +8,5 @@
 import Foundation
 
 final class RMSingleLocation: Codable {
-    
+    let name: String
 }

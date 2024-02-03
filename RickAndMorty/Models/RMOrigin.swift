@@ -8,5 +8,5 @@
 import Foundation
 
 final class RMOrigin: Codable {
-    
+    let name: String
 }
