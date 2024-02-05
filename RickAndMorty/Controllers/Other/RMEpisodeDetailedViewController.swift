@@ -8,11 +8,12 @@
 import UIKit
 
 final class RMEpisodeDetailedViewController: UIViewController {
-
-    private let url: URL?
+    private let viewModel: RMEpisodeDetailedViewModel
+    
+    private let detailView = RMEpisodeDetailView()
     
     init(url: URL?) {
-        self.url = url
+        self.viewModel = .init(endpointUrl: url)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -22,6 +23,24 @@ final class RMEpisodeDetailedViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.addSubview(detailView)
+        addConstraints()
         title = "epsidoe"
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapShare))
+    }
+    
+    private func addConstraints() {
+        NSLayoutConstraint.activate([
+            detailView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            detailView.leftAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leftAnchor),
+            detailView.rightAnchor.constraint(equalTo: view.safeAreaLayoutGuide.rightAnchor),
+            detailView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
+        ])
+    }
+    
+    @objc
+    private func didTapShare() {
+        
     }
 }

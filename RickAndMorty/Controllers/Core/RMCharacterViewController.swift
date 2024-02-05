@@ -17,6 +17,17 @@ final class RMCharacterViewController: UIViewController, CharacterListViewDelega
         navigationItem.largeTitleDisplayMode = .automatic
         view.backgroundColor = .systemBackground
         setupView()
+        addSearchButton()
+    }
+    
+    private func addSearchButton() {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(didTapSearch))
+    }
+    
+    @objc private func didTapSearch() {
+        let vc = RMSearchViewController(config: RMSearchViewController.Config(fetchType: .character))
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     private func setupView() {
