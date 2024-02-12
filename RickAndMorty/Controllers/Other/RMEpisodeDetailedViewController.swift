@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class RMEpisodeDetailedViewController: UIViewController {
+final class RMEpisodeDetailedViewController: UIViewController, RMEpisodeDetailedViewModelDelegate {
     private let viewModel: RMEpisodeDetailedViewModel
     
     private let detailView = RMEpisodeDetailView()
@@ -24,10 +24,12 @@ final class RMEpisodeDetailedViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(detailView)
+        viewModel.deletegate = self
         addConstraints()
         title = "epsidoe"
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapShare))
+        viewModel.fetchEpisodeData()
     }
     
     private func addConstraints() {
@@ -42,5 +44,9 @@ final class RMEpisodeDetailedViewController: UIViewController {
     @objc
     private func didTapShare() {
         
+    }
+    
+    func didFetchEpsidoeDetails() {
+        detailView.configure(with: viewModel)
     }
 }
