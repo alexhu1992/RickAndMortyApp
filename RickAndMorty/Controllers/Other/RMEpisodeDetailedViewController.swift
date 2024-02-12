@@ -23,12 +23,14 @@ final class RMEpisodeDetailedViewController: UIViewController, RMEpisodeDetailed
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
         view.addSubview(detailView)
-        viewModel.deletegate = self
         addConstraints()
-        title = "epsidoe"
+        title = "Epsidoe"
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapShare))
+        
+        viewModel.deletegate = self
         viewModel.fetchEpisodeData()
     }
     

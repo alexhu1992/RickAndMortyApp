@@ -14,8 +14,9 @@ protocol RMEpisodeDetailedViewModelDelegate: AnyObject {
 final class RMEpisodeDetailedViewModel {
     private let endpointUrl: URL?
     
-    private var dataTuple: (RMEpisode, [RMCharacter])? {
+    private var dataTuple: (episode: RMEpisode, characters: [RMCharacter])? {
         didSet {
+            createCellViewModels()
             deletegate?.didFetchEpsidoeDetails()
         }
     }
@@ -27,7 +28,7 @@ final class RMEpisodeDetailedViewModel {
     
     public weak var deletegate: RMEpisodeDetailedViewModelDelegate?
     
-    public private(set) var sections: [SectionType] = []
+    public private(set) var cellViewModels: [SectionType] = []
     
     init(endpointUrl: URL?) {
         self.endpointUrl = endpointUrl
@@ -46,6 +47,30 @@ final class RMEpisodeDetailedViewModel {
                 break
             }
         }
+    }
+    
+    private func createCellViewModels() {
+        guard let dataTuple = dataTuple else {
+            return
+        }
+        let episode = dataTuple.episode
+        let characters = dataTuple.characters
+        cellViewModels = [
+            .information(viewModels: [
+                .init(title: "Episode Name", value: episode.name),
+                .init(title: "Air Data", value: episode.air_date),
+                .init(title: "Episode", value: episode.episode),
+                .init(title: "Created", value: episode.created),
+            ]),
+            .characters(viewModel: characters.compactMap({
+                return RMCharacterCollectionViewCellViewModel(
+                    characterId: $0.id,
+                    characterName: $0.name,
+                    characterStaus: $0.status,
+                    characterImgUrl: URL(string: $0.image)
+                )
+            }))
+        ]
     }
     
     private func fetchRelatedCharacters(episode: RMEpisode) {
@@ -76,8 +101,8 @@ final class RMEpisodeDetailedViewModel {
         
         group.notify(queue: .main) {
             self.dataTuple = (
-                episode,
-                characters
+                episode: episode,
+                characters: characters
             )
         }
     }
