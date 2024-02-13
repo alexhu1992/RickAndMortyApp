@@ -7,7 +7,8 @@
 
 import UIKit
 
-final class RMEpisodeDetailedViewController: UIViewController, RMEpisodeDetailedViewModelDelegate {
+final class RMEpisodeDetailedViewController: UIViewController, RMEpisodeDetailedViewModelDelegate, RMEpisodeDetailViewDelegate {
+    
     private let viewModel: RMEpisodeDetailedViewModel
     
     private let detailView = RMEpisodeDetailView()
@@ -26,6 +27,7 @@ final class RMEpisodeDetailedViewController: UIViewController, RMEpisodeDetailed
         view.backgroundColor = .systemBackground
         view.addSubview(detailView)
         addConstraints()
+        detailView.delegate = self
         title = "Epsidoe"
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapShare))
@@ -46,6 +48,13 @@ final class RMEpisodeDetailedViewController: UIViewController, RMEpisodeDetailed
     @objc
     private func didTapShare() {
         
+    }
+    
+    func rmEpisodeDetailView(_ detailView: RMEpisodeDetailView, didSelect character: RMCharacter) {
+        let vc = RMCharacterDetailViewController(viewModel: .init(character: character))
+        vc.title = character.name
+        vc.navigationItem.largeTitleDisplayMode = .never
+        navigationController?.pushViewController(vc, animated: true)
     }
     
     func didFetchEpsidoeDetails() {
